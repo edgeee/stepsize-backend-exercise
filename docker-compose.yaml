@@ -1,0 +1,31 @@
+version: '3'
+services: 
+  worker:
+    build: services/worker
+    volumes: 
+      - ./services/worker/src:/app/src
+    environment:
+      PORT: 3000
+  dispatch:
+    build: services/dispatch
+    volumes: 
+      - ./services/dispatch/src:/app/src
+    ports:
+      - 3001:3000
+    environment:
+      PORT: 3000
+  redis:
+    image: redis
+  nsqd:
+    image: nsqio/nsq
+    command: /nsqd
+    ports:
+      - "4150"
+      - "4151"
+  nsqadmin:
+    image: nsqio/nsq
+    command: /nsqadmin --nsqd-http-address=nsqd:4151
+    depends_on: 
+      - nsqd
+    ports:
+      - 4171:4171

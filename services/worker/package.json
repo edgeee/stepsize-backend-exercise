@@ -1,0 +1,21 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "ts-node-dev --transpileOnly src/index.ts"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.1",
+    "@types/nsqjs": "^0.9.0",
+    "ts-node": "^8.0.2",
+    "ts-node-dev": "^1.0.0-pre.32",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "nsqjs": "^0.12.0"
+  }
+}
