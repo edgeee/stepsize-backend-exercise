@@ -7,9 +7,9 @@
     - [Assesment](#assesment)
     - [Submission](#submission)
   - [Tasks](#tasks)
-    - [Task 1 - Retry Jobs](#task-1---retry-jobs)
-    - [Task 2 - Metrics Service](#task-2---metrics-service)
-    - [Task 3 - Reasoning & Retrospective](#task-3---reasoning--retrospective)
+    - [Task 1 - Retry Jobs (~1 hour)](#task-1---retry-jobs-1-hour)
+    - [Task 2 - Metrics Service (~2 hours)](#task-2---metrics-service-2-hours)
+    - [Task 3 - Reasoning & Retrospective (~1 hour)](#task-3---reasoning--retrospective-1-hour)
 
 ---
 You have been given a collection of services that process and manage fictional jobs. Jobs are created by the `dispatch` service and published onto a message queue, this queue is subscribed to by `worker` services who process the jobs and report status back to the `dispatch` service.
@@ -27,6 +27,7 @@ These resources will help you understand the existing code and architecture.
 - [nsqjs](http://nsqjs.com/)
 - [ioredis](https://github.com/luin/ioredis)
 
+Feel free to use any other resources at your disposal (Stack Overflow, Google, etc.) to complete the exercises. 
 
 ### Assesment
 
@@ -47,14 +48,14 @@ To submit your work archive the repository including the `.git` folder in a `zip
 
 ## Tasks
 
-### Task 1 - Retry Jobs
+### Task 1 - Retry Jobs (~1 hour)
 
 When a job fails the `worker` updates the status of the job to `Failed`. All jobs eventually succeed so we would like to add a retry mechanism to the system.
 
 Modify existing code or add new code to implement the retrying of jobs.
 
 ---
-### Task 2 - Metrics Service
+### Task 2 - Metrics Service (~2 hours)
 
 Logs are good but we need a higher level overview of how the system is performing, There is a empty `metrics` service that needs to be built.
 
@@ -71,7 +72,7 @@ This can be implemented in any way you see fit.
 This service doesn't currently have an entry in the docker-compose file so you will need to add that as well. 
 
 ---
-### Task 3 - Reasoning & Retrospective
+### Task 3 - Reasoning & Retrospective (~1 hour)
 
 Now that you have worked with this system we would like you to write a little about it. 
 

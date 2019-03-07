@@ -26,6 +26,8 @@ I's uses [Redis](https://redis.io/) for storage with the [ioredis](https://githu
 
 Documentation for the REST api can be found in the `docs` folder if needed.
 
+⚠️ The dispatch service does not automatically create jobs, you will need to send HTTP `POST` requests to the `/api/job` endpoint.
+
 # Worker
 The worker service subscribes to the nsq topic dispatch publishes jobs onto, when it receives a job it processes it and reports its status to the dispatch service using the dispatch client.
 
