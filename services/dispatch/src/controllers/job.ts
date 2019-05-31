@@ -1,8 +1,11 @@
 import { JsonController, Param, Body, Get, Post, Put, Delete } from 'routing-controllers';
 import { writer } from '../nsq';
-import { Job } from '../entities/job';
+import { Job, JobStatus } from '../entities/job';
 import { ResponseSchema } from 'routing-controllers-openapi';
 import { JobUpdate } from '../payloads/jobUpdate';
+
+const RETRY_JOB_THRESHOLD = 10 /*  Rety jobs this many times */
+const RETRY_JOB_INTERVAL = 5000 /* in ms */
 
 @JsonController('/job')
 export class JobController {
@@ -38,7 +41,11 @@ export class JobController {
     description: 'The updated job',
   })
   async update(@Param('id') id: string, @Body() job: JobUpdate) {
-    return Job.update(id, job);
+    const updated = await Job.update(id, job);
+    if (updated.status === JobStatus.Failed) {
+      this.retryJob(await Job.get(id));
+    }
+    return updated;
   }
 
   @Delete('/:id')
@@ -48,5 +55,18 @@ export class JobController {
   delete(@Param('id') id: string) {
     console.log('Delete');
     return Job.delete(id);
+  }
+
+  private async retryJob(job: Job) {
+    if (job.retries >= RETRY_JOB_THRESHOLD) {
+      return;
+    }
+    setTimeout(async () => {
+      await Job.update(job.id, {
+        retries: job.retries + 1
+      });
+
+      writer.publish('job_run', job);
+    }, job.retries * RETRY_JOB_INTERVAL);
   }
 }

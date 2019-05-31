@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsEnum, IsISO8601, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsEnum, IsString } from 'class-validator';
 
 import { BaseEntity } from './base';
 
@@ -19,6 +19,10 @@ export class Job extends BaseEntity {
 
   @IsEnum(JobStatus)
   status: JobStatus = JobStatus.Pending;
+
+  @IsNumber()
+  @IsOptional()
+  retries: number = 0;
 
   async processing() {
     return Job.update(this.id, {
