@@ -14,6 +14,7 @@ This repo contains the code required to complete the Stepsize [backend exercise]
 ### Links
 - [Exercise](EXERCISE.md)
 - [Architecture](ARCHITECTURE.md)
+- [Reasoning & Introspective](REASONING-INTROSPECTIVE.md)
 
 ## Prerequisites
 - [Node.js 10 (LTS)](https://nodejs.org/en/)
@@ -41,6 +42,7 @@ docker-compose up --build
 ```
 
 The dispatch service is exposed on http://localhost:3001
+The metrics service is exposed on http://localhost:4001
 
 You can scale the worker service up / down by doing.
 ```
