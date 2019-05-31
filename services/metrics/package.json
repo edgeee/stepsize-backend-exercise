@@ -5,13 +5,25 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "start": "ts-node-dev --transpileOnly src/index.ts"
+    "start": "ts-node-dev --transpileOnly src/index.ts",
+    "lint": "tslint --fix -p tsconfig.json -c tslint.json"
   },
   "devDependencies": {
+    "@types/node": "^12.0.3",
     "ts-node": "^8.0.2",
     "ts-node-dev": "^1.0.0-pre.32",
+    "tslint": "^5.17.0",
     "typescript": "^3.3.3"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "class-validator-jsonschema": "^1.2.0",
+    "express": "^4.17.1",
+    "ioredis": "^4.9.5",
+    "morgan": "^1.9.1",
+    "nsqjs": "^0.12.0",
+    "reflect-metadata": "^0.1.13",
+    "routing-controllers": "^0.7.7",
+    "routing-controllers-openapi": "^1.7.0"
   }
 }

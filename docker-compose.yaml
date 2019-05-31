@@ -14,6 +14,14 @@ services:
       - 3001:3000
     environment:
       PORT: 3000
+  metrics:
+    build: services/metrics
+    volumes:
+      - ./services/metrics/src:/app/src
+    ports:
+      - 4001:4000
+    environment:
+      PORT: 4000
   redis:
     image: redis
   nsqd:

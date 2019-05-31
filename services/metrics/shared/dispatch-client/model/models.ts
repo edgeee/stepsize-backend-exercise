@@ -9,27 +9,27 @@ import { Job } from './job';
 import { JobUpdate } from './jobUpdate';
 
 /* tslint:disable:no-unused-variable */
-let primitives = [
-                    "string",
-                    "boolean",
-                    "double",
-                    "integer",
-                    "long",
-                    "float",
-                    "number",
-                    "any"
+const primitives = [
+                    'string',
+                    'boolean',
+                    'double',
+                    'integer',
+                    'long',
+                    'float',
+                    'number',
+                    'any',
                  ];
-                 
-let enumsMap: {[index: string]: any} = {
-        "Job.StatusEnum": Job.StatusEnum,
-        "JobUpdate.StatusEnum": JobUpdate.StatusEnum,
-}
 
-let typeMap: {[index: string]: any} = {
-    "BaseEntity": BaseEntity,
-    "Job": Job,
-    "JobUpdate": JobUpdate,
-}
+const enumsMap: {[index: string]: any} = {
+        'Job.StatusEnum': Job.StatusEnum,
+        'JobUpdate.StatusEnum': JobUpdate.StatusEnum,
+};
+
+const typeMap: {[index: string]: any} = {
+    BaseEntity,
+    Job,
+    JobUpdate,
+};
 
 export class ObjectSerializer {
     public static findCorrectType(data: any, expectedType: string) {
@@ -37,7 +37,7 @@ export class ObjectSerializer {
             return expectedType;
         } else if (primitives.indexOf(expectedType.toLowerCase()) !== -1) {
             return expectedType;
-        } else if (expectedType === "Date") {
+        } else if (expectedType === 'Date') {
             return expectedType;
         } else {
             if (enumsMap[expectedType]) {
@@ -49,13 +49,13 @@ export class ObjectSerializer {
             }
 
             // Check the discriminator
-            let discriminatorProperty = typeMap[expectedType].discriminator;
+            const discriminatorProperty = typeMap[expectedType].discriminator;
             if (discriminatorProperty == null) {
                 return expectedType; // the type does not have a discriminator. use it.
             } else {
                 if (data[discriminatorProperty]) {
-                    var discriminatorType = data[discriminatorProperty];
-                    if(typeMap[discriminatorType]){
+                    const discriminatorType = data[discriminatorProperty];
+                    if (typeMap[discriminatorType]) {
                         return discriminatorType; // use the type given in the discriminator
                     } else {
                         return expectedType; // discriminator did not map to a type
@@ -72,16 +72,16 @@ export class ObjectSerializer {
             return data;
         } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
             return data;
-        } else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
-            let subType: string = type.replace("Array<", ""); // Array<Type> => Type>
+        } else if (type.lastIndexOf('Array<', 0) === 0) { // string.startsWith pre es6
+            let subType: string = type.replace('Array<', ''); // Array<Type> => Type>
             subType = subType.substring(0, subType.length - 1); // Type> => Type
-            let transformedData: any[] = [];
-            for (let index in data) {
-                let date = data[index];
+            const transformedData: any[] = [];
+            for (const index in data) {
+                const date = data[index];
                 transformedData.push(ObjectSerializer.serialize(date, subType));
             }
             return transformedData;
-        } else if (type === "Date") {
+        } else if (type === 'Date') {
             return data.toISOString();
         } else {
             if (enumsMap[type]) {
@@ -90,15 +90,15 @@ export class ObjectSerializer {
             if (!typeMap[type]) { // in case we dont know the type
                 return data;
             }
-            
+
             // Get the actual type of this object
             type = this.findCorrectType(data, type);
 
             // get the map for the correct type.
-            let attributeTypes = typeMap[type].getAttributeTypeMap();
-            let instance: {[index: string]: any} = {};
-            for (let index in attributeTypes) {
-                let attributeType = attributeTypes[index];
+            const attributeTypes = typeMap[type].getAttributeTypeMap();
+            const instance: {[index: string]: any} = {};
+            for (const index in attributeTypes) {
+                const attributeType = attributeTypes[index];
                 instance[attributeType.baseName] = ObjectSerializer.serialize(data[attributeType.name], attributeType.type);
             }
             return instance;
@@ -112,16 +112,16 @@ export class ObjectSerializer {
             return data;
         } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
             return data;
-        } else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
-            let subType: string = type.replace("Array<", ""); // Array<Type> => Type>
+        } else if (type.lastIndexOf('Array<', 0) === 0) { // string.startsWith pre es6
+            let subType: string = type.replace('Array<', ''); // Array<Type> => Type>
             subType = subType.substring(0, subType.length - 1); // Type> => Type
-            let transformedData: any[] = [];
-            for (let index in data) {
-                let date = data[index];
+            const transformedData: any[] = [];
+            for (const index in data) {
+                const date = data[index];
                 transformedData.push(ObjectSerializer.deserialize(date, subType));
             }
             return transformedData;
-        } else if (type === "Date") {
+        } else if (type === 'Date') {
             return new Date(data);
         } else {
             if (enumsMap[type]) {// is Enum
@@ -131,10 +131,10 @@ export class ObjectSerializer {
             if (!typeMap[type]) { // dont know the type
                 return data;
             }
-            let instance = new typeMap[type]();
-            let attributeTypes = typeMap[type].getAttributeTypeMap();
-            for (let index in attributeTypes) {
-                let attributeType = attributeTypes[index];
+            const instance = new typeMap[type]();
+            const attributeTypes = typeMap[type].getAttributeTypeMap();
+            for (const index in attributeTypes) {
+                const attributeType = attributeTypes[index];
                 instance[attributeType.name] = ObjectSerializer.deserialize(data[attributeType.baseName], attributeType.type);
             }
             return instance;
@@ -155,8 +155,8 @@ export class HttpBasicAuth implements Authentication {
 
     applyToRequest(requestOptions: localVarRequest.Options): void {
         requestOptions.auth = {
-            username: this.username, password: this.password
-        }
+            username: this.username, password: this.password,
+        };
     }
 }
 
@@ -167,9 +167,9 @@ export class ApiKeyAuth implements Authentication {
     }
 
     applyToRequest(requestOptions: localVarRequest.Options): void {
-        if (this.location == "query") {
-            (<any>requestOptions.qs)[this.paramName] = this.apiKey;
-        } else if (this.location == "header" && requestOptions && requestOptions.headers) {
+        if (this.location == 'query') {
+            (requestOptions.qs as any)[this.paramName] = this.apiKey;
+        } else if (this.location == 'header' && requestOptions && requestOptions.headers) {
             requestOptions.headers[this.paramName] = this.apiKey;
         }
     }
@@ -180,7 +180,7 @@ export class OAuth implements Authentication {
 
     applyToRequest(requestOptions: localVarRequest.Options): void {
         if (requestOptions && requestOptions.headers) {
-            requestOptions.headers["Authorization"] = "Bearer " + this.accessToken;
+            requestOptions.headers.Authorization = 'Bearer ' + this.accessToken;
         }
     }
 }
